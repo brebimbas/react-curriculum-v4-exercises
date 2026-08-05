@@ -14,6 +14,39 @@ export default function SnackForm({
   const [rating, setRating] = useState('');
   const [touched, setTouch] = useState({ name: false, rating: false });
 
+  useEffect(() => {
+    if (isEditing) {
+      setName(editingSnack.name);
+      setRating(editingSnack.rating);
+    } else {
+      setName('');
+      setRating('');
+    }
+    setTouch({ name: false, rating: false });
+  }, [editingSnack, isEditing]);
+
+  function validateName() {
+    return name.trim() !== '';
+  }
+
+  function validateRating() {
+    return rating !== '';
+  }
+
+  function getNameError() {
+    if (touched.name && !validateName()) {
+      return 'Snake name is required';
+    }
+    return '';
+  }
+
+  function getRattingError() {
+    if (touched.rating && !validateRating()) {
+      return 'Please select a rating';
+    }
+    return '';
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
     const formData = new FormData(e.target);
