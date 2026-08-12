@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
+import UserProfile from './src/components/UserProfile';
+import TaskFilter from './src/components/TaskFilter';
+import TaskItem from './src/components/TaskItem';
 
 export default function StudentWork() {
   const [tasks, setTasks] = useState([]);
   const [filter, setFilter] = useState('all');
   const [loading, setLoading] = useState(true);
 
-  //  #1: Data fetching + state + UI logic all mixed together
   useEffect(() => {
     const timeout = setTimeout(() => {
       setTasks([
@@ -19,38 +21,30 @@ export default function StudentWork() {
     return () => clearTimeout(timeout);
   }, []);
 
-  // #2: Filtering logic inside component
-  let visibleTasks = tasks;
-  if (filter === 'completed') {
-    visibleTasks = tasks.filter((task) => task.completed);
-  }
-  if (filter === 'pending') {
-    visibleTasks = tasks.filter((task) => !task.completed);
-  }
+  const visibleTasks = useMemo(() => {
+    switch (filter) {
+      case 'completed':
+        return tasks.filter((task) => task.completed);
+      case 'pending':
+        return tasks.filter((task) => !task.completed);
+      default:
+        return tasks;
+    }
+  }, [tasks, filter]);
 
   if (loading) {
     return <p>Loading tasks...</p>;
   }
 
   return (
-    <div>
-      {/* #3: Hardcoded UI, not reusable */}
-      <h2>Welcome, Student</h2>
+    <div className="student-work">
+      <UserProfile name="Student" />
 
-      {/* #4: Repeated button JSX */}
-      <div>
-        <button onClick={() => setFilter('all')}>All</button>
-        <button onClick={() => setFilter('completed')}>Completed</button>
-        <button onClick={() => setFilter('pending')}>Pending</button>
-        <p>Current filter: {filter}</p>
-      </div>
+      <TaskFilter currentFilter={filter} onFilterChange={setFilter} />
 
-      {/* #5: Inline list rendering */}
-      <ul>
+      <ul className="task-list">
         {visibleTasks.map((task) => (
-          <li key={task.id}>
-            {task.title} {task.completed ? '✅' : '⏳'}
-          </li>
+          <TaskItem key={task.id} task={task} />
         ))}
       </ul>
     </div>
