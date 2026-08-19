@@ -35,7 +35,7 @@ export function getPosts() {
     if (!response.ok) {
       throw new Error(`HTTP error! status ${response.status}`);
     }
-    return response.json;
+    return response.json();
   });
 }
 
@@ -63,6 +63,6 @@ export function getSinglePost(postId) {
     if (!response.ok) {
       throw new Error(`HTTP error! status ${response.status}`);
     }
-    return response.json;
+    return response.json();
   });
 }
