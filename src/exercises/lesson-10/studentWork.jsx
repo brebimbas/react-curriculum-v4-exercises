@@ -4,11 +4,11 @@ import { Routes, Route } from 'react-router';
 import Header from './components/Header.jsx';
 import Footer from './components/Footer.jsx';
 
-import Home from './components/Home.jsx';
-import Checkout from './components/Checkout.jsx';
-import ProductDetails from './components/ProductDetails.jsx';
-import Account from './components/Account.jsx';
-import NotFound from './components/NotFound.jsx';
+import Home from './pages/Home.jsx';
+import Checkout from './pages/Checkout.jsx';
+import ProductDetails from './pages/ProductDetails.jsx';
+import Account from './pages/Account.jsx';
+import NotFound from './pages/NotFound.jsx';
 
 import productsData from './data/products.js';
 
